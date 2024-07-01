@@ -26,15 +26,13 @@ These instructions will get you a copy of the project up and running on your loc
 
 1. Clone the repository
 2. Install the dependencies with `npm install`
-3. Start the application with `npm start`
 
-## Running the tests
+### Local Development
 
-Explain how to run the automated tests for this system.
+This project uses Skaffold and Kubernetes for local development.
 
-## Deployment
-
-Add additional notes about how to deploy this on a live system.
+1. Make sure you have Skaffold and Kubernetes installed on your machine.
+2. Start the local development server with `skaffold dev`. This command will build your Docker images, deploy your application to a local Kubernetes cluster and start the application.
 
 ## Contributing
 
