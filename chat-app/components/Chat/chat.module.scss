@@ -1,0 +1,84 @@
+@import "@/styles/variables.scss";
+
+.chatContainer {
+    display: flex;
+    flex-direction: row;
+    height: 750px;
+    justify-content: space-between;
+    padding: 10px;
+    background: $dark-color;
+  }
+
+  .sidebar {
+    flex: 1;
+    border-right: 2px solid $primary-color;
+  }
+
+  .messagesContainer {
+    display: flex;
+    flex-direction: column;
+    flex: 5;
+  }
+
+  .chatBox {
+    width: 100%;
+    height: 750px;
+    overflow-y: scroll;
+  }
+
+  .messageRight {
+    display: flex;
+    justify-content: flex-end;
+    margin: 10px;
+
+    .messageText {
+      background: $secondary-color;
+      color: $text-color;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 5px;
+    }
+  }
+
+.messageLeft {
+    display: flex;
+    justify-content: flex-start;
+    margin: 10px;
+
+    .messageText {
+      background: $primary-color;
+      color: $text-color;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 5px;
+    }
+  }
+
+
+
+  .inputContainer {
+    display: flex;
+    flex-direction: row;
+    padding: 7px 5px;
+
+    input {
+      padding: 15px;
+      flex: 6;
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+      background-color: #34506a;
+      color: $text-color;
+      border: 0;
+    }
+
+    button {
+      flex: 1;
+      height: 49px;
+      border-left: 0;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+  
+
+  

@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: get-messages-deployment
+  namespace: chat-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: get-message
+  template:
+    metadata:
+      labels:
+        app: get-message
+    spec:
+      initContainers:
+        - name: wait-for-rabbitmq
+          image: busybox
+          command:
+            [
+              "sh",
+              "-c",
+              'until nc -z -v -w30 rabbitmq-service.chat-app.svc.cluster.local 5672; do echo "waiting for rabbitmq"; sleep 5; done',
+            ]
+      containers:
+        - name: get-message
+          image: alfredoizjr/get-messages:latest
+          ports:
+            - containerPort: 4001
+          env:
+            - name: RABBITMQ_URL
+              value: "amqp://rabbitmq-service.chat-app.svc.cluster.local"
+            - name: "JWT_SECRET"
+              value: "mysecret"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: get-service
+  namespace: chat-app
+spec:
+  selector:
+    app: get-message
+  ports:
+    - protocol: TCP
+      port: 4001
+      targetPort: 4001
+  type: ClusterIP

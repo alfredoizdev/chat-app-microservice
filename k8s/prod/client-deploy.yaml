@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-app
+  namespace: chat-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client-app
+  template:
+    metadata:
+      labels:
+        app: client-app
+    spec:
+      containers:
+        - name: client-app
+          image: alfredoizjr/client-app:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: RABBITMQ_URL
+              value: "amqp://rabbitmq-service.chat-app.svc.cluster.local"
+            - name: "JWT_SECRET"
+              value: "mysecret"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-app-service
+  namespace: chat-app
+spec:
+  selector:
+    app: client-app
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000

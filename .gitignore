@@ -1,0 +1,49 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+chat-app/node_modules
+chat-app/.pnp
+chat-app/.pnp.js
+chat-app/.yarn/install-state.gz
+
+# testing
+chat-app/coverage
+
+# next.js
+chat-app/.next/
+chat-app/out/
+
+# production
+chat-app/build
+
+# misc
+chat-app/.DS_Store
+chat-app/*.pem
+
+# debug
+chat-app/npm-debug.log*
+chat-app/yarn-debug.log*
+chat-app/yarn-error.log*
+
+# local env files
+chat-app/.env*.local
+
+# vercel
+chat-app/.vercel
+
+# typescript
+chat-app/*.tsbuildinfo
+chat-app/next-env.d.ts
+
+#/bin/bash
+cleanup.sh
+mongo.sh
+
+#/get-message
+get-message/dist
+get-message/node_modules
+
+#/post-message
+post-message/dist
+post-message/node_modules
+

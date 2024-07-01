@@ -1,0 +1,36 @@
+apiVersion: skaffold/v2beta25
+kind: Config
+metadata:
+  name: chat-app
+build:
+  local:
+    push: false
+  artifacts:
+    - image: alfredoizjr/client-app
+      context: ./chat-app
+      docker:
+        dockerfile: Dockerfile.dev
+    - image: alfredoizjr/get-messages
+      context: ./get-message
+      docker:
+        dockerfile: Dockerfile
+    - image: alfredoizjr/post-messages
+      context: ./post-message
+      docker:
+        dockerfile: Dockerfile
+    - image: alfredoizjr/auth-messages
+      context: ./auth
+      docker:
+        dockerfile: Dockerfile
+deploy:
+  kubectl:
+    manifests:
+      - ./k8s/dev/namespace.yaml
+      - ./k8s/dev/mongo-pvc.yaml
+      - ./k8s/dev/rabbitmq-deployment.yaml
+      - ./k8s/dev/get-message-deployment.yaml
+      - ./k8s/dev/post-message-deployment.yaml
+      - ./k8s/dev/client-deploy.yaml
+      - ./k8s/dev/ingress-service.yaml
+      - ./k8s/dev/auth-deployment.yaml
+      - ./k8s/dev/mongo-deployment.yaml
