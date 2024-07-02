@@ -79,6 +79,26 @@
       border-bottom-left-radius: 0;
     }
   }
+
+  .userList {
+   display: flex;
+   flex-direction: column;
+    padding: 10px;
+  }
+
+  .user {
+   
+    button {
+      background: $secondary-color;
+      color: $text-color;
+      padding: 10px;
+      width: 90%;
+      border-radius: 5px;
+      margin: 5px;
+      border: 0;
+    }
+
+  }
   
 
   

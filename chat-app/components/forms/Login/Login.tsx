@@ -7,11 +7,8 @@ import Button from "@/components/shared/Button/Button";
 
 import styles from "./Login.module.scss";
 import useLogin from "@/hooks/useLogin";
-
-type FormValues = {
-  email: string;
-  password: string;
-};
+import { loginAction } from "@/actions/authActions";
+import { AuthValues } from "@/types/auth";
 
 const Login = () => {
   const [mounted, setMounted] = useState(false);
@@ -20,7 +17,7 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>({
+  } = useForm<AuthValues>({
     mode: "onBlur",
     defaultValues: {
       email: "",
@@ -29,6 +26,22 @@ const Login = () => {
   });
 
   const { onSubmit } = useLogin();
+
+  // const onSubmit: SubmitHandler<AuthValues> = async (data) => {
+  //   const response = await loginAction(data);
+
+  //   const { error, token } = response;
+
+  //   if (error) {
+  //     console.log("error", error);
+  //     return;
+  //   }
+
+  //   if (token && token! == null) {
+  //     console.log("token", token);
+  //     localStorage.setItem("token", token);
+  //   }
+  // };
 
   useEffect(() => {
     setMounted(true);

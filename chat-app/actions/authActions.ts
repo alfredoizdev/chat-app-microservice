@@ -1,16 +1,31 @@
 "use server";
-import { redirect } from "next/navigation";
 import axios from "axios";
+import { AuthValues } from "@/types/auth";
+import { cookies } from "next/headers";
 // import { revalidatePath } from "next/cache";
 
-export async function loginAction(prevState: any, data: FormData) {
-  console.log("data", data);
-  const email = data.get("email");
-  const password = data.get("password");
+export async function loginAction(
+  data: FormData | AuthValues
+): Promise<{ token: string | null; error: string | null }> {
+  let email: FormDataEntryValue | null | string = null;
+  let password: FormDataEntryValue | null | string = null;
+
+  const cookieStore = cookies();
+
+  if (data instanceof FormData) {
+    email = data.get("email");
+    password = data.get("password");
+  } else {
+    email = data?.email;
+    password = data?.password;
+  }
+
+  console.log("email", email);
+  console.log("password", password);
 
   try {
     const response = await axios.post(
-      "http://server-app.com/api/login",
+      "http://auth-service.chat-app.svc.cluster.local:4003/api/login",
       {
         email,
         password,
@@ -24,39 +39,31 @@ export async function loginAction(prevState: any, data: FormData) {
 
     console.log("response", response);
 
-    // redirect("/chat");
+    if (response.status === 200) {
+      cookieStore.set("token", response.data.token);
 
-    // if (response.status === 200) {
-    //   //localStorage.setItem("token", response.data.token);
-    //   redirect("/chat");
-    // }
-    // const response = await fetch("http://server-app.com/api/login", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({ email, password }),
-    // });
-
-    // console.log(response.ok);
-
-    // if (response.ok) {
-    //   const data = await response.json();
-    //   localStorage.setItem("token", data.token);
-    //   redirect("/chat");
-    // }
+      return {
+        token: response.data.token,
+        error: null,
+      };
+    } else {
+      return {
+        token: null,
+        error: "Invalid email or password",
+      };
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log("error ====>", error.response?.data);
+      return {
+        token: null,
+        error: error.response?.data.msg || "Unexpected error",
+      };
+    }
 
     return {
       token: null,
-      error: "Invalid email or password",
+      error: "Unexpected status code",
     };
-  } catch (error) {
-    if (error instanceof TypeError) {
-      console.log("error", error);
-      return {
-        token: null,
-        error: error.message,
-      };
-    }
   }
 }

@@ -1,7 +1,8 @@
 import { SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import axios from "axios";
+// import axios from "axios";
+import { loginAction } from "@/actions/authActions";
 
 type FormValues = {
   email: string;
@@ -12,33 +13,24 @@ const useLogin = () => {
   const router = useRouter();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URI}/login`,
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+    const response = await loginAction(data);
 
-      if (response.status === 200) {
-        localStorage.setItem("token", response.data.token);
-        router.push("/");
-      } else {
-        toast.error("Invalid email or password", {
-          position: "top-right",
-          duration: 5000,
-          richColors: true,
-        });
-      }
-    } catch (error) {
-      toast.error("Invalid email or password", {
+    const { error, token } = response;
+
+    if (error) {
+      console.log("error", error);
+
+      toast.error(error, {
         position: "top-right",
         duration: 5000,
         richColors: true,
       });
+    }
+
+    if (token && token !== null) {
+      console.log("token", token);
+      localStorage.setItem("token", token);
+      router.push("/");
     }
   };
 

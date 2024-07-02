@@ -8,6 +8,7 @@ import { verifyTokenRouter } from "./router/verify";
 import usersRouter from "./router/users";
 
 const app = express();
+
 app.use(express.json());
 app.use(cors());
 
