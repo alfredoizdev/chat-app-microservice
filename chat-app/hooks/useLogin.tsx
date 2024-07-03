@@ -1,7 +1,7 @@
+import { useState } from "react";
 import { SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-// import axios from "axios";
 import { loginAction } from "@/actions/authActions";
 
 type FormValues = {
@@ -10,32 +10,43 @@ type FormValues = {
 };
 
 const useLogin = () => {
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    const response = await loginAction(data);
+    setLoading(true);
 
-    const { error, token } = response;
+    try {
+      const response = await loginAction(data);
 
-    if (error) {
-      console.log("error", error);
+      const { error, token } = response;
 
-      toast.error(error, {
-        position: "top-right",
-        duration: 5000,
-        richColors: true,
-      });
-    }
+      if (error) {
+        console.log("error", error);
 
-    if (token && token !== null) {
-      console.log("token", token);
-      localStorage.setItem("token", token);
-      router.push("/");
+        toast.error(error, {
+          position: "top-right",
+          duration: 5000,
+          richColors: true,
+        });
+      }
+
+      if (token && token !== null) {
+        console.log("token", token);
+        localStorage.setItem("token", token);
+        router.push("/");
+      }
+    } catch (error) {
+      console.error("error ====>", error);
+      toast.error("Unexpected error");
+    } finally {
+      setLoading(false);
     }
   };
 
   return {
     onSubmit,
+    loading,
   };
 };
 

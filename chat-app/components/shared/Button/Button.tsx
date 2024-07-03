@@ -5,6 +5,7 @@ type ButtonProps = {
   disabled?: boolean;
   children: React.ReactNode;
   type?: "button" | "submit" | "reset";
+  loading?: boolean;
 };
 
 const Button = ({
@@ -12,12 +13,17 @@ const Button = ({
   disabled,
   children,
   type = "button",
+  loading = false,
 }: ButtonProps) => {
   return (
     <button
-      className={styles.customButton}
+      className={`
+      ${styles.customButton} 
+      ${loading ? styles.loading : ""}
+      `}
       onClick={onClick}
       disabled={disabled}
+      type={type}
     >
       {children}
     </button>

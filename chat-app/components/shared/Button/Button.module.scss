@@ -1,3 +1,9 @@
+@import "@/styles/variables.scss";
+
+@keyframes flash {
+    0%, 100% {background-color: $ligth-blue;}
+    50% {background-color: lighten($ligth-blue, 20%);}
+}
 .customButton {
     background-color: #007bff;
     color: #fff;
@@ -16,5 +22,31 @@
         background-color: #ccc;
         color: #666;
         cursor: not-allowed;
+    }
+}
+
+.customButton {
+    background-color: $ligth-blue;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: $ligth-blue 0px 0px 10px;
+
+    &:hover {
+        background-color: darken($ligth-blue, 10%);
+    }
+    &:disabled {
+        background-color: #ccc;
+        color: #666;
+        cursor: not-allowed;
+    }
+
+    &.loading {
+        opacity: 0.7;
+        pointer-events: none;
+        animation: flash 2s linear infinite;
     }
 }

@@ -1,28 +1,42 @@
 @import "@/styles/variables.scss";
+@import "@/styles/mixins.scss";
 
 .chatContainer {
     display: flex;
     flex-direction: row;
-    height: 750px;
+    height: 100vh;
     justify-content: space-between;
-    padding: 10px;
-    background: $dark-color;
+    background: $primary-color;
+    overflow: hidden;
   }
 
   .sidebar {
     flex: 1;
-    border-right: 2px solid $primary-color;
+    background-color: $primary-color;
+    color: $text-color;
+
+    @include media-query("mobile") {
+      display: none;
+    }
+
   }
 
   .messagesContainer {
     display: flex;
     flex-direction: column;
+    background-color: $secondary-color;
     flex: 5;
+    border-bottom-left-radius: 15px;
+    border-top-left-radius: 15px;
+
+    @include media-query("mobile") {
+      border-radius: 0;
+    }
   }
 
   .chatBox {
     width: 100%;
-    height: 750px;
+    height: 100%;
     overflow-y: scroll;
   }
 
@@ -32,7 +46,7 @@
     margin: 10px;
 
     .messageText {
-      background: $secondary-color;
+      background: $ligth-blue;
       color: $text-color;
       padding: 10px;
       border-radius: 5px;
@@ -47,7 +61,7 @@
 
     .messageText {
       background: $primary-color;
-      color: $text-color;
+      color: $text-color-dark;
       padding: 10px;
       border-radius: 5px;
       margin: 5px;
@@ -98,6 +112,14 @@
       border: 0;
     }
 
+  }
+
+  .userIcon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+    color: #34506a;
   }
   
 

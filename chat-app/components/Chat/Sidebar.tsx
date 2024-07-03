@@ -21,9 +21,9 @@ const SidebarChat = () => {
     <div className={styles.sidebar}>
       <ul className={styles.userList}>
         <li>
-          <h2>
+          <span className={styles.userIcon}>
             <i className="bi bi-people-fill"></i>
-          </h2>
+          </span>
         </li>
         {users.map((user) => (
           <li className={styles.user} key={user.id}>

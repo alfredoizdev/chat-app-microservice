@@ -1,22 +1,25 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
 import Link from "next/link";
+
+import { useForm } from "react-hook-form";
 
 import Button from "@/components/shared/Button/Button";
 
-import styles from "./Login.module.scss";
-import useLogin from "@/hooks/useLogin";
-import { AuthValues } from "@/types/auth";
+import { RegisterValues } from "@/types/auth";
 
-const Login = () => {
+import useRegister from "@/hooks/useRegister";
+
+import styles from "./Register.module.scss";
+
+const Register = () => {
   const [mounted, setMounted] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<AuthValues>({
+  } = useForm<RegisterValues>({
     mode: "onBlur",
     defaultValues: {
       email: "",
@@ -24,7 +27,7 @@ const Login = () => {
     },
   });
 
-  const { onSubmit, loading } = useLogin();
+  const { onSubmit, loading } = useRegister();
 
   useEffect(() => {
     setMounted(true);
@@ -40,8 +43,8 @@ const Login = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.loginCard}>
-        <h1 className={styles.title}>Login</h1>
+      <div className={styles.registerCard}>
+        <h1 className={styles.title}>Sing Up</h1>
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <div className="formGroup">
             <label className={styles.label} htmlFor="email">
@@ -52,8 +55,21 @@ const Login = () => {
               id="email"
               {...register("email", { required: true })}
             />
-            {errors?.email && (
+            {errors?.password && (
               <span className={styles.error}>Email is required</span>
+            )}
+          </div>
+          <div className="formGroup">
+            <label className={styles.label} htmlFor="username">
+              Username
+            </label>
+            <input
+              type="text"
+              id="username"
+              {...register("username", { required: true })}
+            />
+            {errors?.username && (
+              <span className={styles.error}>Username is required</span>
             )}
           </div>
           <div className="formGroup">
@@ -70,12 +86,12 @@ const Login = () => {
             )}
           </div>
           <div style={{ marginBottom: "15px" }}>
-            <Link className={styles.link} href="/auth/register">
-              Don't have an account? Register
+            <Link className={styles.link} href="/auth/login">
+              Already have an account? Login
             </Link>
           </div>
-          <Button type="submit" loading={loading}>
-            Login
+          <Button loading={loading} type="submit">
+            Sing Up
           </Button>
         </form>
       </div>
@@ -83,4 +99,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

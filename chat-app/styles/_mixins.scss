@@ -12,3 +12,35 @@
     text-overflow: ellipsis;
   }
   
+// styles/_mixins.scss
+
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin text-truncate {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+@mixin media-query($breakpoint) {
+    @if $breakpoint == "mobile" {
+        @media (max-width: 767px) {
+            @content;
+        }
+    } @else if $breakpoint == "tablet" {
+        @media (min-width: 768px) and (max-width: 1023px) {
+            @content;
+        }
+    } @else if $breakpoint == "desktop" {
+        @media (min-width: 1024px) {
+            @content;
+        }
+    } @else {
+        @error "Invalid breakpoint: #{$breakpoint}.";
+    }
+}
+  

@@ -1,7 +1,7 @@
-import styles from "./RegisterPage.module.scss";
+import Register from "@/components/forms/Register/Register";
 
 const RegisterPage = () => {
-  return <div></div>;
+  return <Register />;
 };
 
 export default RegisterPage;
