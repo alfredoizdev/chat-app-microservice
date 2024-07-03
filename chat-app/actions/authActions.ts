@@ -20,9 +20,6 @@ export async function loginAction(
     password = data?.password;
   }
 
-  console.log("email", email);
-  console.log("password", password);
-
   try {
     const response = await axios.post(
       "http://auth-service.chat-app.svc.cluster.local:4003/api/login",
@@ -36,8 +33,6 @@ export async function loginAction(
         },
       }
     );
-
-    console.log("response", response);
 
     if (response.status === 200) {
       cookieStore.set("token", response.data.token);
