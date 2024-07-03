@@ -4,8 +4,6 @@ import jwt from "jsonwebtoken";
 const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   let secret = process.env.JWT_SECRET;
 
-  console.log(req.header("authorization"));
-
   if (!secret) {
     console.error("Is not set env for token");
     return res.status(400).json({ msg: "Is not set env for token" });

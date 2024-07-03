@@ -7,7 +7,6 @@ import Button from "@/components/shared/Button/Button";
 
 import styles from "./Login.module.scss";
 import useLogin from "@/hooks/useLogin";
-import { loginAction } from "@/actions/authActions";
 import { AuthValues } from "@/types/auth";
 
 const Login = () => {
@@ -26,22 +25,6 @@ const Login = () => {
   });
 
   const { onSubmit } = useLogin();
-
-  // const onSubmit: SubmitHandler<AuthValues> = async (data) => {
-  //   const response = await loginAction(data);
-
-  //   const { error, token } = response;
-
-  //   if (error) {
-  //     console.log("error", error);
-  //     return;
-  //   }
-
-  //   if (token && token! == null) {
-  //     console.log("token", token);
-  //     localStorage.setItem("token", token);
-  //   }
-  // };
 
   useEffect(() => {
     setMounted(true);

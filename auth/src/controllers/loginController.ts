@@ -49,6 +49,6 @@ export const loginUser = async (req: Request, res: Response) => {
     res.status(200).json({ token });
   } catch (error) {
     console.error("Error registering user: ", error);
-    res.status(500).json({ msg: "Internal server error" });
+    res.status(400).json({ msg: "Invalid credentials" });
   }
 };
