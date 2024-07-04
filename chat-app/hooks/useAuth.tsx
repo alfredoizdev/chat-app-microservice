@@ -1,6 +1,8 @@
+"use client";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { logoutAction } from "@/actions/authActions";
 
 const useAuth = () => {
   const router = useRouter();
@@ -9,6 +11,7 @@ const useAuth = () => {
     const verifyToken = async () => {
       const token = localStorage.getItem("token") || "";
       if (!token) {
+        await logoutAction();
         router.push("/auth/login");
         return;
       }
@@ -23,6 +26,7 @@ const useAuth = () => {
 
         if (response.status !== 200) {
           router.push("/auth/login");
+          await logoutAction();
         }
       } catch (error) {
         console.error(error);

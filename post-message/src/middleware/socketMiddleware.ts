@@ -11,8 +11,6 @@ const socketAuthMiddleware = (
   let token =
     socket.handshake.query.token || socket.handshake.headers["authorization"];
 
-  console.log("Token: ", token);
-
   // Ensure token is a single string
   if (Array.isArray(token)) {
     token = token[0];

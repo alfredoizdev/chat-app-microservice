@@ -1,3 +1,4 @@
+"use client";
 import styles from "./chat.module.scss";
 import usePostMessage from "@/hooks/usePostMessage";
 import Button from "../shared/Button/Button";

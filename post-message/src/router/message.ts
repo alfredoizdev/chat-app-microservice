@@ -10,6 +10,7 @@ const messageRouter = Router();
 
 messageRouter.post("/api/messages", authMiddleware, async (req, res) => {
   const queue = "chat";
+  const { senderId, recivedId } = req.body;
 
   if (!rabbitmqUrl) {
     console.error("RabbitMQ URL not provided");

@@ -1,0 +1,76 @@
+@import "@/styles/variables.scss";
+@import "@/styles/mixins.scss";
+
+  .sidebar {
+    flex: 1;
+    background-color: $ligth-gray;
+    color: $text-color;
+
+    @include media-query("mobile") {
+      display: none;
+    }
+
+  }
+
+  .userList {
+    display: flex;
+    flex-direction: column;
+     padding: 1px;
+   }
+ 
+   .user {
+     display: flex;
+     justify-content: flex-start;
+     align-items: center;
+     color: $text-color-dark;
+     padding: 10px;
+     width: 100%;
+     border: 0;
+     cursor: pointer;
+     border-bottom: 1px solid #ccc;
+ 
+     i {
+       font-size: 20px;
+       padding-right: 10px;
+     }
+   }
+ 
+   .userIcon {
+     padding: 5px;
+     color: $text-color-dark;
+   }
+ 
+   .sidebarHeader {
+ 
+     padding: 10px;
+ 
+     .formZone {
+       position: relative;
+ 
+       i {
+         position: absolute;
+         top: 40%;
+         transform: translateY(-50%);
+         right: 10px;
+         color: $text-color-dark;
+         font-weight: 600;
+       }
+ 
+       .searchInput {
+         padding: 10px;
+         border: 1px solid #ccc;
+         border-radius:20px;
+         margin-bottom: 10px;
+         width: 100%;
+         box-sizing: border-box;
+       }
+     }
+   }
+ 
+   .subHeader {
+     h2 {
+       padding: 10px;
+       background-color: #e2e5e8;
+       color: $text-color-dark;
+     }
+   }

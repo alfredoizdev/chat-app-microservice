@@ -1,37 +1,15 @@
 @import "@/styles/variables.scss";
 @import "@/styles/mixins.scss";
 
-.chatContainer {
-    display: flex;
-    flex-direction: row;
-    height: 100vh;
-    justify-content: space-between;
-    background: $primary-color;
-    overflow: hidden;
-  }
-
   .sidebar {
     flex: 1;
-    background-color: $primary-color;
+    background-color: $ligth-gray;
     color: $text-color;
 
     @include media-query("mobile") {
       display: none;
     }
 
-  }
-
-  .messagesContainer {
-    display: flex;
-    flex-direction: column;
-    background-color: $secondary-color;
-    flex: 5;
-    border-bottom-left-radius: 15px;
-    border-top-left-radius: 15px;
-
-    @include media-query("mobile") {
-      border-radius: 0;
-    }
   }
 
   .chatBox {
@@ -77,12 +55,13 @@
 
     input {
       padding: 15px;
-      flex: 6;
-      border-top-left-radius: 5px;
-      border-bottom-left-radius: 5px;
-      background-color: #34506a;
-      color: $text-color;
+      flex: 6 1;
+      border-bottom-left-radius: 10px;
+      border-top-left-radius: 10px;
+      background-color: #213343;
+      color: #ecf0f1;
       border: 0;
+      margin-left: 5px;
     }
 
     button {
@@ -92,34 +71,6 @@
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
     }
-  }
-
-  .userList {
-   display: flex;
-   flex-direction: column;
-    padding: 10px;
-  }
-
-  .user {
-   
-    button {
-      background: $secondary-color;
-      color: $text-color;
-      padding: 10px;
-      width: 90%;
-      border-radius: 5px;
-      margin: 5px;
-      border: 0;
-    }
-
-  }
-
-  .userIcon {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 10px;
-    color: #34506a;
   }
   
 

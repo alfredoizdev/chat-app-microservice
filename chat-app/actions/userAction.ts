@@ -8,8 +8,6 @@ export const fetchUser = async (): Promise<User[] | []> => {
 
   const token = cookieStore.get("token")?.value || "";
 
-  console.log("token", token);
-
   try {
     const { data } = await axios.get(
       "http://auth-service.chat-app.svc.cluster.local:4003/api/users",

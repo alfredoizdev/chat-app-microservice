@@ -7,7 +7,7 @@ import { User } from "@/types/user";
 
 export async function loginAction(
   data: FormData | AuthValues
-): Promise<{ token: string | null; error: string | null }> {
+): Promise<{ token: string | null; user: User | null; error: string | null }> {
   let email: FormDataEntryValue | null | string = null;
   let password: FormDataEntryValue | null | string = null;
 
@@ -36,14 +36,18 @@ export async function loginAction(
     );
 
     if (response.status === 200) {
-      cookieStore.set("token", response.data.token);
+      const { token, user } = response.data;
+
+      cookieStore.set("token", token);
 
       return {
         token: response.data.token,
+        user,
         error: null,
       };
     } else {
       return {
+        user: null,
         token: null,
         error: "Invalid email or password",
       };
@@ -52,12 +56,14 @@ export async function loginAction(
     if (axios.isAxiosError(error)) {
       console.log("error ====>", error.response?.data);
       return {
+        user: null,
         token: null,
         error: error.response?.data.msg || "Unexpected error",
       };
     }
 
     return {
+      user: null,
       token: null,
       error: "Unexpected status code",
     };
@@ -121,4 +127,9 @@ export const registerAction = async (
       error: "Unexpected status code",
     };
   }
+};
+
+export const logoutAction = async (): Promise<void> => {
+  const cookieStore = cookies();
+  cookieStore.delete("token");
 };

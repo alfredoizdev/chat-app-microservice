@@ -1,0 +1,23 @@
+@import "@/styles/variables.scss";
+@import "@/styles/mixins.scss";
+
+.chatContainer {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    justify-content: space-between;
+    background: $ligth-gray;
+    overflow: hidden;
+  }
+
+  .messagesContainer {
+    display: flex;
+    flex-direction: column;
+    background-color: $secondary-color;
+    flex: 5;
+    border-bottom-left-radius: 15px;
+
+    @include media-query("mobile") {
+      border-radius: 0;
+    }
+  }

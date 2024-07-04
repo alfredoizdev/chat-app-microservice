@@ -1,3 +1,4 @@
+"use client";
 import { postChatAction } from "@/actions/sendMessageAction";
 import { useState } from "react";
 

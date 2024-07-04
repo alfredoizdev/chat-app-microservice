@@ -1,10 +1,10 @@
+"use client";
+import useSocket from "@/hooks/useSocket";
 import styles from "./chat.module.scss";
 
-type MessagesProps = {
-  messages: string[];
-};
+const Messages = () => {
+  const { messages } = useSocket();
 
-const Messages = ({ messages }: MessagesProps) => {
   return (
     <div className={styles.chatBox}>
       {messages.map((message: string, index: any) => (

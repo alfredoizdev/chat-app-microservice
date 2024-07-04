@@ -1,8 +1,10 @@
+"use client";
 import { useState } from "react";
 import { SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { loginAction } from "@/actions/authActions";
+import { useUserStore } from "@/store/userStore";
 
 type FormValues = {
   email: string;
@@ -12,6 +14,7 @@ type FormValues = {
 const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const setCurrentUser = useUserStore((state) => state.setCurrentUser);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     setLoading(true);
@@ -19,7 +22,11 @@ const useLogin = () => {
     try {
       const response = await loginAction(data);
 
-      const { error, token } = response;
+      const { error, token, user } = response;
+
+      if (user) {
+        setCurrentUser(user);
+      }
 
       if (error) {
         console.log("error", error);
@@ -32,7 +39,6 @@ const useLogin = () => {
       }
 
       if (token && token !== null) {
-        console.log("token", token);
         localStorage.setItem("token", token);
         router.push("/");
       }

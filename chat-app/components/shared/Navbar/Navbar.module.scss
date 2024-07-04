@@ -1,0 +1,66 @@
+@import "@/styles/variables.scss";
+@import "@/styles/mixins.scss";
+
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 58px;
+    background-color: #374d62;
+    padding: 10px;
+    color: #ecf0f1;
+    border-bottom: 1px solid #33485d;
+}
+
+.buttonZone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 25px;
+}
+
+.add {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: transparent;
+    border:2px solid $primary-color;
+    color: $text-color-dark;
+    margin-right: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    color: $primary-color;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+        background: $primary-color;
+        color: $text-color-dark;
+    }
+}
+
+
+
+.logout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: transparent;
+    border:2px solid $danger-color;
+    color: $danger-color;
+    cursor: pointer;
+    font-size: 20px;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+        background: $danger-color;
+        color: $text-color-dark;
+    }
+}
