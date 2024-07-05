@@ -1,27 +1,22 @@
 "use client";
 import { useState, useEffect } from "react";
-import io from "socket.io-client";
+import { socket } from "@/lib/socket/io";
+import { Socket } from "socket.io-client";
 
 const useSocket = () => {
   const [messages, setMessages] = useState<any>([]);
-  const [socketGetMsg, setSocketGetMsg] = useState<any>(null);
+  const [socketGetMsg, setSocketGetMsg] = useState<Socket>();
 
   useEffect(() => {
-    const socket = io("http://server-app.com", {
-      transports: ["websocket"],
-      query: {
-        token: localStorage.getItem("token") || "",
-      },
-    });
-
-    setSocketGetMsg(socket);
+    setSocketGetMsg(socket(localStorage.getItem("token") || ""));
   }, []);
 
   useEffect(() => {
+    console.log("socketGetMsg", socketGetMsg?.connected);
+
     if (socketGetMsg) {
       const handleMessage = (msg: string) => {
         setMessages((prevMessages: any) => [...prevMessages, msg]);
-        console.log("Received message: ", msg);
       };
 
       const handleConnectError = (err: any) => {
@@ -50,7 +45,7 @@ const useSocket = () => {
     }
   }, [socketGetMsg]);
 
-  return { socketGetMsg, messages };
+  return { messages };
 };
 
 export default useSocket;

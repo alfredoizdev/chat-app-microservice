@@ -1,10 +1,9 @@
 "use server";
+import { Chat } from "@/types/chat";
 import axios from "axios";
 import { cookies } from "next/headers";
 
-export const postChatAction = async (
-  message: string
-): Promise<string | null> => {
+export const postChatAction = async (chat: Chat): Promise<string | null> => {
   const storeCookie = cookies();
 
   const token = storeCookie.get("token")?.value;
@@ -13,7 +12,7 @@ export const postChatAction = async (
     const response = await axios.post(
       "http://post-service.chat-app.svc.cluster.local:4002/api/messages",
       {
-        message,
+        chat,
       },
       {
         headers: {

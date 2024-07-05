@@ -1,35 +1,7 @@
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-
-import { User } from "@/types/user";
-
-import { fetchUser } from "@/actions/userAction";
-
+import UserList from "@/components/UserList/UserList";
 import styles from "./Sidebar.module.scss";
-import { useUserStore } from "@/store/userStore";
 
 const Sidebar = () => {
-  const [users, setUsers] = useState<User[] | []>([]);
-  const router = useRouter();
-
-  const setUser = useUserStore((state) => state.setUser);
-
-  const handleOnClick = (user: User) => {
-    setUser(user);
-    router.push(`/chat/room/${user.id}`);
-  };
-
-  useEffect(() => {
-    const gettingUsers = async () => {
-      const data = await fetchUser();
-      if (data) {
-        setUsers(data);
-      }
-    };
-
-    gettingUsers();
-  }, []);
-
   return (
     <div className={styles.sidebar}>
       <ul className={styles.userList}>
@@ -48,16 +20,7 @@ const Sidebar = () => {
             <h2>Users</h2>
           </div>
         </li>
-        {users.map((user) => (
-          <li
-            className={styles.user}
-            key={user.id}
-            onClick={() => handleOnClick(user)}
-          >
-            <i className="bi bi-person-circle"></i>
-            <span className={styles.userName}>{user.username}</span>
-          </li>
-        ))}
+        <UserList />
       </ul>
     </div>
   );

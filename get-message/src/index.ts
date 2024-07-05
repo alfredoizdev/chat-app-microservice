@@ -4,10 +4,12 @@ import amqp from "amqplib";
 import { Server } from "socket.io";
 import http from "http";
 import cors from "cors";
+import morgan from "morgan";
 import socketAuthMiddleware from "./middleware/socketMiddleware";
 
 const app = express();
 app.use(cors());
+app.use(morgan("dev"));
 
 const rabbitmqUrl = process.env.RABBITMQ_URL;
 
@@ -20,6 +22,7 @@ const io = new Server(server, {
 });
 
 const queue = "chat";
+let users: string[] = [];
 
 io.use(socketAuthMiddleware);
 
@@ -34,10 +37,14 @@ async function startRabbitMQ() {
   await channel.assertQueue(queue, { durable: false });
 
   channel.consume(queue, (msg) => {
-    console.log("Received message: ", msg?.content.toString());
     if (msg !== null) {
-      const message = msg.content.toString();
-      io.emit("chat message", message);
+      const chat = msg.content.toString();
+      const messageObject = JSON.parse(msg.content.toString());
+      const { reciverId, senderId } = messageObject;
+      const recivedId = `${users[reciverId]}`;
+      const sender = `${users[senderId]}`;
+
+      io.to(recivedId).to(sender).emit("chat message", messageObject);
       channel.ack(msg);
     }
   });
@@ -45,6 +52,10 @@ async function startRabbitMQ() {
 
 io.on("connection", (socket) => {
   console.log("a user connected", (socket as any).user.id);
+
+  const userId = (socket as any).user.id;
+  users[userId] = socket.id;
+
   socket.on("disconnect", () => {
     console.log("user disconnected");
   });

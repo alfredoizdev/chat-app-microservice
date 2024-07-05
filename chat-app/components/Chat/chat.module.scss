@@ -72,6 +72,19 @@
       border-bottom-left-radius: 0;
     }
   }
+
+  .noMessage {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    color: $text-color-medium;
+
+    i {
+      font-size: 1.7em;
+    }
+  }
   
 
   

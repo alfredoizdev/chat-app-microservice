@@ -18,22 +18,7 @@
      padding: 1px;
    }
  
-   .user {
-     display: flex;
-     justify-content: flex-start;
-     align-items: center;
-     color: $text-color-dark;
-     padding: 10px;
-     width: 100%;
-     border: 0;
-     cursor: pointer;
-     border-bottom: 1px solid #ccc;
  
-     i {
-       font-size: 20px;
-       padding-right: 10px;
-     }
-   }
  
    .userIcon {
      padding: 5px;
