@@ -12,8 +12,6 @@ const useSocket = () => {
   }, []);
 
   useEffect(() => {
-    console.log("socketGetMsg", socketGetMsg?.connected);
-
     if (socketGetMsg) {
       const handleMessage = (msg: string) => {
         setMessages((prevMessages: any) => [...prevMessages, msg]);

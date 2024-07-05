@@ -1,5 +1,5 @@
-# client/Dockerfile
-FROM node:14-alpine AS builder
+# Use a specific version of node for the build stage
+FROM node:16-alpine AS builder
 WORKDIR /app
 
 # Copy package.json and package-lock.json
@@ -15,7 +15,7 @@ COPY . .
 RUN npm run build
 
 # Use a smaller image for the final stage
-FROM node:14-alpine
+FROM node:16-alpine
 WORKDIR /app
 
 # Copy the compiled files from the builder stage
@@ -29,7 +29,7 @@ COPY --from=builder /app/package-lock.json ./package-lock.json
 RUN npm install --only=production
 
 # Expose the application port
-EXPOSE 4001
+EXPOSE 4003
 
 # Start the application
 CMD ["node", "dist/index.js"]

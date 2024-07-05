@@ -57,6 +57,13 @@ spec:
                 name: auth-service
                 port:
                   number: 4003
+          - path: /api/history
+            pathType: Prefix
+            backend:
+              service:
+                name: history-service
+                port:
+                  number: 4005
     - host: chat-app.com
       http:
         paths:

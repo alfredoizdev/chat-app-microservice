@@ -1,6 +1,8 @@
 export type Chat = {
   senderId: string;
+  lastSenderId: string;
   message: string;
-  reciverId: string;
+  receiverId: string;
   createdAt: string;
+  type: string;
 };

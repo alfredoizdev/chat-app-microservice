@@ -22,6 +22,10 @@ build:
       context: ./auth
       docker:
         dockerfile: Dockerfile
+    - image: alfredoizjr/history-messages
+      context: ./history
+      docker:
+        dockerfile: Dockerfile
 deploy:
   kubectl:
     manifests:
@@ -34,3 +38,4 @@ deploy:
       - ./k8s/dev/ingress-service.yaml
       - ./k8s/dev/auth-deployment.yaml
       - ./k8s/dev/mongo-deployment.yaml
+      - ./k8s/dev/history-deployment.yaml

@@ -1,4 +1,3 @@
-// src/get-service/get-service.ts
 import express from "express";
 import amqp from "amqplib";
 import { Server } from "socket.io";
@@ -6,6 +5,8 @@ import http from "http";
 import cors from "cors";
 import morgan from "morgan";
 import socketAuthMiddleware from "./middleware/socketMiddleware";
+import connectToMongoDB from "./mongodb/connection";
+import storeMsgController from "./controllers/storeMsgController";
 
 const app = express();
 app.use(cors());
@@ -38,11 +39,14 @@ async function startRabbitMQ() {
 
   channel.consume(queue, (msg) => {
     if (msg !== null) {
-      const chat = msg.content.toString();
       const messageObject = JSON.parse(msg.content.toString());
-      const { reciverId, senderId } = messageObject;
-      const recivedId = `${users[reciverId]}`;
+      const { receiverId, senderId } = messageObject;
+      const recivedId = `${users[receiverId]}`;
       const sender = `${users[senderId]}`;
+
+      console.log("Message received", messageObject);
+
+      storeMsgController(messageObject);
 
       io.to(recivedId).to(sender).emit("chat message", messageObject);
       channel.ack(msg);
@@ -50,19 +54,31 @@ async function startRabbitMQ() {
   });
 }
 
-io.on("connection", (socket) => {
-  console.log("a user connected", (socket as any).user.id);
+const startServer = async () => {
+  io.on("connection", (socket) => {
+    console.log("a user connected", (socket as any).user.id);
 
-  const userId = (socket as any).user.id;
-  users[userId] = socket.id;
+    const userId = (socket as any).user.id;
+    users[userId] = socket.id;
 
-  socket.on("disconnect", () => {
-    console.log("user disconnected");
+    socket.on("disconnect", () => {
+      console.log("user disconnected");
+    });
   });
-});
 
-startRabbitMQ().catch(console.warn);
+  startRabbitMQ().catch(console.warn);
 
-server.listen(4001, () => {
-  console.log("Get service 1 running on port 4001");
-});
+  try {
+    await connectToMongoDB();
+    console.log("Connected to MongoDB");
+  } catch (error) {
+    console.error("Failed to connect to MongoDB", error);
+    process.exit(1); // Exit the process with failure code
+  }
+
+  server.listen(4001, () => {
+    console.log("Get service 1 running on port 4001");
+  });
+};
+
+startServer();

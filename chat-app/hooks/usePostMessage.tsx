@@ -17,9 +17,11 @@ const usePostMessage = () => {
 
     const chat: Chat = {
       message: input,
-      reciverId: recivedId as string,
+      lastSenderId: senderId as string,
+      receiverId: recivedId as string,
       senderId: senderId as string,
       createdAt: new Date().toISOString(),
+      type: "text",
     };
 
     await postChatAction(chat);
