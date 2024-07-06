@@ -5,13 +5,12 @@ import { useUserStore } from "@/store/userStore";
 
 export const useGetHistory = () => {
   const user = useUserStore((state) => state.user);
-  const currentUser = useUserStore((state) => state.currentUser);
   const [history, setHistory] = useState<Chat[]>([]);
 
   useEffect(() => {
     const fetchHistory = async () => {
-      if (currentUser && user) {
-        const response = await historyAction(currentUser.id, user.id);
+      if (user) {
+        const response = await historyAction(user.id);
 
         if (response) {
           setHistory(response);
@@ -20,7 +19,7 @@ export const useGetHistory = () => {
     };
 
     fetchHistory();
-  }, [currentUser, user]);
+  }, [user]);
 
   return { history };
 };

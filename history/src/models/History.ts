@@ -5,7 +5,6 @@ export interface IHistory extends Document {
   receiverId: string;
   lastSenderId: string;
   message: string;
-  read: boolean;
   type: string;
 }
 
@@ -26,10 +25,6 @@ const HistorySchema: Schema = new Schema(
     lastSenderId: {
       type: String,
       required: true,
-    },
-    read: {
-      type: Boolean,
-      default: false,
     },
     type: {
       type: String,
@@ -57,6 +52,6 @@ HistorySchema.pre("save", function (next) {
   next();
 });
 
-const Message = mongoose.model<IHistory>("History", HistorySchema);
+const History = mongoose.model<IHistory>("History", HistorySchema);
 
-export default Message;
+export default History;

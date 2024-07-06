@@ -5,8 +5,6 @@ import http from "http";
 import cors from "cors";
 import morgan from "morgan";
 import socketAuthMiddleware from "./middleware/socketMiddleware";
-import connectToMongoDB from "./mongodb/connection";
-import storeMsgController from "./controllers/storeMsgController";
 
 const app = express();
 app.use(cors());
@@ -23,6 +21,8 @@ const io = new Server(server, {
 });
 
 const queue = "chat";
+const historyQueue = "history";
+const unread = "unread";
 let users: string[] = [];
 
 io.use(socketAuthMiddleware);
@@ -37,18 +37,31 @@ async function startRabbitMQ() {
   const channel = await connection.createChannel();
   await channel.assertQueue(queue, { durable: false });
 
-  channel.consume(queue, (msg) => {
+  channel.consume(queue, async (msg) => {
     if (msg !== null) {
       const messageObject = JSON.parse(msg.content.toString());
       const { receiverId, senderId } = messageObject;
       const recivedId = `${users[receiverId]}`;
       const sender = `${users[senderId]}`;
 
-      console.log("Message received", messageObject);
-
-      storeMsgController(messageObject);
-
       io.to(recivedId).to(sender).emit("chat message", messageObject);
+
+      // create new channel to send message to history service
+      const newChannel = await connection.createChannel();
+      newChannel.sendToQueue(
+        historyQueue,
+        Buffer.from(JSON.stringify(messageObject))
+      );
+      await newChannel.close();
+
+      // create new channel to send message to unread service
+      const unreadChannel = await connection.createChannel();
+      unreadChannel.sendToQueue(
+        unread,
+        Buffer.from(JSON.stringify(messageObject))
+      );
+      await unreadChannel.close();
+
       channel.ack(msg);
     }
   });
@@ -67,14 +80,6 @@ const startServer = async () => {
   });
 
   startRabbitMQ().catch(console.warn);
-
-  try {
-    await connectToMongoDB();
-    console.log("Connected to MongoDB");
-  } catch (error) {
-    console.error("Failed to connect to MongoDB", error);
-    process.exit(1); // Exit the process with failure code
-  }
 
   server.listen(4001, () => {
     console.log("Get service 1 running on port 4001");

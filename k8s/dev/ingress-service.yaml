@@ -64,6 +64,20 @@ spec:
                 name: history-service
                 port:
                   number: 4005
+          - path: /api/unread
+            pathType: Prefix
+            backend:
+              service:
+                name: unread-service
+                port:
+                  number: 4006
+          - path: /api/seed/users
+            pathType: Prefix
+            backend:
+              service:
+                name: seed-service
+                port:
+                  number: 4007
     - host: chat-app.com
       http:
         paths:

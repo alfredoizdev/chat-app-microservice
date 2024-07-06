@@ -1,31 +1,65 @@
 "use client";
+import { useEffect, useState } from "react";
 import useSocket from "@/hooks/useSocket";
 import styles from "./chat.module.scss";
 import { Chat } from "@/types/chat";
 import { useUserStore } from "@/store/userStore";
-import { useGetHistory } from "@/hooks/useGetHistory";
 
-const Messages = () => {
-  const user = useUserStore((state) => state.user);
-  const currentUser = useUserStore((state) => state.currentUser);
+type MessagesProps = {
+  history: Chat[] | [];
+};
+
+const Messages = ({ history }: MessagesProps) => {
+  const user = useUserStore((state) => state.currentUser);
+  const [mounted, setMounted] = useState(false);
+
+  console.log("history", user);
 
   const { messages } = useSocket();
-  const { history } = useGetHistory();
+
+  console.log("messages", messages);
+
+  const formatDate = (date: string | undefined) => {
+    if (!date) {
+      return "";
+    }
+
+    const newDate = new Date(date);
+    return newDate.toLocaleString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    });
+  };
+
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <div className={styles.chatBox}>
-      {history.length > 0 && (
+      {Array.isArray(history) && history.length > 0 && (
         <>
-          {history.map((message: Chat, index: number) => (
+          {history?.map((message: Chat, index: number) => (
             <div
               key={index}
               className={`${
-                message.lastSenderId === user?.id
-                  ? styles.messageRight
-                  : styles.messageLeft
+                message.senderId === user?.id
+                  ? styles.messageLeft
+                  : styles.messageRight
               }`}
             >
-              <div className={styles.messageText}>{message.message}</div>
+              <div className={styles.msg}>
+                <div className={styles.messageText}>{message.message}</div>
+                <span className={styles.date}>
+                  {formatDate(message?.createdAt)}
+                </span>
+              </div>
             </div>
           ))}
         </>
@@ -35,11 +69,16 @@ const Messages = () => {
           key={index}
           className={`${
             message.senderId === user?.id
-              ? styles.messageRight
-              : styles.messageLeft
+              ? styles.messageLeft
+              : styles.messageRight
           }`}
         >
-          <div className={styles.messageText}>{message.message}</div>
+          <div className={styles.msg}>
+            <div className={styles.messageText}>{message.message}</div>
+            <span className={styles.date}>
+              {formatDate(message?.createdAt)}
+            </span>
+          </div>
         </div>
       ))}
 

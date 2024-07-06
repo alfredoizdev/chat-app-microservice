@@ -26,6 +26,14 @@ build:
       context: ./history
       docker:
         dockerfile: Dockerfile
+    - image: alfredoizjr/unread-messages
+      context: ./unread
+      docker:
+        dockerfile: Dockerfile
+    - image: alfredoizjr/seed
+      context: ./seed
+      docker:
+        dockerfile: Dockerfile
 deploy:
   kubectl:
     manifests:
@@ -39,3 +47,5 @@ deploy:
       - ./k8s/dev/auth-deployment.yaml
       - ./k8s/dev/mongo-deployment.yaml
       - ./k8s/dev/history-deployment.yaml
+      - ./k8s/dev/unread-deployment.yaml
+      - ./k8s/dev/seed-deployment.yaml

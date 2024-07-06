@@ -39,6 +39,7 @@ export async function loginAction(
       const { token, user } = response.data;
 
       cookieStore.set("token", token);
+      cookieStore.set("currentUser", JSON.stringify(user));
 
       return {
         token: response.data.token,
@@ -132,4 +133,5 @@ export const registerAction = async (
 export const logoutAction = async (): Promise<void> => {
   const cookieStore = cookies();
   cookieStore.delete("token");
+  cookieStore.delete("currentUser");
 };
