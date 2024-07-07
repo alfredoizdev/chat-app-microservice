@@ -10,14 +10,11 @@ type MessagesProps = {
 };
 
 const Messages = ({ history }: MessagesProps) => {
-  const user = useUserStore((state) => state.currentUser);
+  const user = useUserStore((state) => state.user);
+  const currentUser = useUserStore((state) => state.currentUser);
   const [mounted, setMounted] = useState(false);
 
-  console.log("history", user);
-
   const { messages } = useSocket();
-
-  console.log("messages", messages);
 
   const formatDate = (date: string | undefined) => {
     if (!date) {
@@ -49,7 +46,7 @@ const Messages = ({ history }: MessagesProps) => {
             <div
               key={index}
               className={`${
-                message.senderId === user?.id
+                message.senderId === currentUser?.id
                   ? styles.messageLeft
                   : styles.messageRight
               }`}
@@ -68,7 +65,7 @@ const Messages = ({ history }: MessagesProps) => {
         <div
           key={index}
           className={`${
-            message.senderId === user?.id
+            message.senderId === currentUser?.id
               ? styles.messageLeft
               : styles.messageRight
           }`}

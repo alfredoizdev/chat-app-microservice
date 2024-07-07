@@ -30,8 +30,6 @@ async function startRabbitMQ() {
     if (msg !== null) {
       const messageObject = JSON.parse(msg.content.toString());
 
-      console.log("Message received on unread", messageObject);
-
       updateUnreadController(messageObject.receiverId, messageObject.senderId);
 
       channel.ack(msg);

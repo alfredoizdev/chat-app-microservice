@@ -32,6 +32,12 @@ This project uses Skaffold and Kubernetes for local development.
 
 1. Make sure you have Skaffold and Kubernetes installed on your machine.
 2. Start the local development server with `skaffold dev`. This command will build your Docker images, deploy your application to a local Kubernetes cluster and start the application.
+3. seed users list on mongodb by using http://server-app.com/api/seed/users
+
+### Aditional
+
+Your need configure /etc/hosts
+to use server-app.com and chat-app.com
 
 ## Contributing
 

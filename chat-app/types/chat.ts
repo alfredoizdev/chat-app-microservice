@@ -6,3 +6,12 @@ export type Chat = {
   type: string;
   createdAt?: string;
 };
+
+export type Unread = {
+  senderId: string;
+  receiverId: string;
+  unreadReceived: number;
+  unreadSender: number;
+  createdAt?: string;
+  id?: string;
+};

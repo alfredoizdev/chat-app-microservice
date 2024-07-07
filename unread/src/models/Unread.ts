@@ -1,19 +1,19 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 export interface IUnread extends Document {
-  userId: string;
-  conversationWithId: string;
+  senderId: string;
+  receiverId: string;
   unreadReceived: number;
   unreadSender: number;
 }
 
 const UnreadSchema: Schema = new Schema(
   {
-    userId: {
+    senderId: {
       type: String,
       required: true,
     },
-    conversationWithId: {
+    receiverId: {
       type: String,
       required: true,
     },

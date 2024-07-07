@@ -6,15 +6,8 @@ const updateUnreadController = async (
 ): Promise<void> => {
   try {
     await Unread.findOneAndUpdate(
-      { userId: receiverId, conversationWithId: senderId },
+      { senderId, receiverId },
       { $inc: { unreadReceived: 1 } },
-      { upsert: true, new: true }
-    );
-
-    // Update unread sent count for the sender
-    await Unread.findOneAndUpdate(
-      { userId: senderId, conversationWithId: receiverId },
-      { $inc: { unreadSent: 1 } },
       { upsert: true, new: true }
     );
   } catch (error) {

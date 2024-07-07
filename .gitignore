@@ -47,3 +47,15 @@ get-message/node_modules
 post-message/dist
 post-message/node_modules
 
+#/rooms
+rooms/dist
+rooms/node_modules
+
+#/history
+history/dist
+history/node_modules
+
+#/unread
+unread/dist
+unread/node_modules
+

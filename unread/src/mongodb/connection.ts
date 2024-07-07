@@ -5,7 +5,7 @@ async function connectToMongoDB(): Promise<void> {
   const password = "example";
   const host = "mongo-service";
   const port = "27017";
-  const database = "history";
+  const database = "unread";
   const authSource = "admin";
 
   const uri = `mongodb://${username}:${password}@${host}:${port}/${database}?authSource=${authSource}`;
