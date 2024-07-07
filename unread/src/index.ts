@@ -15,6 +15,7 @@ app.use(getUread);
 
 const rabbitmqUrl = process.env.RABBITMQ_URL;
 const unread = "unread";
+const unreadUpdatedBack = "unreadUpdatedBack";
 
 async function startRabbitMQ() {
   if (!rabbitmqUrl) {
@@ -26,12 +27,14 @@ async function startRabbitMQ() {
   const channel = await connection.createChannel();
   await channel.assertQueue(unread, { durable: false });
 
-  channel.consume(unread, (msg) => {
+  channel.consume(unread, async (msg) => {
     if (msg !== null) {
       const messageObject = JSON.parse(msg.content.toString());
 
-      updateUnreadController(messageObject.receiverId, messageObject.senderId);
-
+      await updateUnreadController(
+        messageObject.receiverId,
+        messageObject.senderId
+      );
       channel.ack(msg);
     }
   });

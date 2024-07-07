@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
+import useSocket from "@/hooks/useSocket";
 
 import { fetchUser } from "@/actions/userAction";
 import { useUserStore } from "@/store/userStore";
@@ -9,23 +10,22 @@ import { useChatStore } from "@/store/chatStore";
 
 const UserList = () => {
   const router = useRouter();
+  const { unread } = useSocket();
 
-  const user = useUserStore((state) => state.user);
   const currentUser = useUserStore((state) => state.currentUser);
 
   const [users, setUsers] = useState<User[] | []>([]);
   const setUser = useUserStore((state) => state.setUser);
-
-  const { getUreadMessages, unread } = useChatStore((state) => state);
 
   const handleOnClick = (user: User) => {
     setUser(user);
     router.push(`/chat/room/${user.id}`);
   };
 
+  console.log("unread", unread);
+
   useEffect(() => {
     const gettingUsers = async () => {
-      await getUreadMessages();
       const data = await fetchUser();
       if (data) {
         setUsers(data);
@@ -36,7 +36,6 @@ const UserList = () => {
   }, []);
 
   const getUnreadDataForChat = (user: User) => {
-    console.log("unread", currentUser?.id);
     if (!currentUser || !user) return 0;
 
     const unreadData = unread.find(

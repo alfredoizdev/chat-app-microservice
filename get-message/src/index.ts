@@ -61,6 +61,7 @@ async function startRabbitMQ() {
         Buffer.from(JSON.stringify(messageObject))
       );
       await unreadChannel.close();
+      io.to(recivedId).emit("update unread");
 
       channel.ack(msg);
     }

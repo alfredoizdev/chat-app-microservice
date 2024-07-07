@@ -1,11 +1,11 @@
-import Unread from "../models/Unread";
+import Unread, { IUnread } from "../models/Unread";
 
 const updateUnreadController = async (
   receiverId: string,
   senderId: string
 ): Promise<void> => {
   try {
-    await Unread.findOneAndUpdate(
+    const response = await Unread.findOneAndUpdate(
       { senderId, receiverId },
       { $inc: { unreadReceived: 1 } },
       { upsert: true, new: true }

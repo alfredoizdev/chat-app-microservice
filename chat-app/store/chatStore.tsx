@@ -6,13 +6,16 @@ import { Unread } from "@/types/chat";
 
 type ChatState = {
   unread: Unread[];
+  updateUnread: boolean;
+  updateUnreadCount: () => void;
   getUreadMessages: () => Promise<void>;
 };
 
 export const useChatStore = create<ChatState>()(
   devtools(
-    (set) => ({
+    (set, get) => ({
       unread: [],
+      updateUnread: false,
       getUreadMessages: async () => {
         try {
           const response = await axios.get(
@@ -30,6 +33,9 @@ export const useChatStore = create<ChatState>()(
           console.log("Error getting unread messages", error);
           set({ unread: [] });
         }
+      },
+      updateUnreadCount: () => {
+        set({ updateUnread: get().updateUnread ? false : true });
       },
     }),
     {
